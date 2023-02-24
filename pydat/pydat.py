@@ -1,4 +1,4 @@
-import dataretrieval.nwis as nwisddd
+import dataretrieval.nwis as nwis
 from datetime import datetime
 import pandas as pd
 import numpy as np

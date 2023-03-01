@@ -85,7 +85,7 @@ class pydat:
 
         sufficient_year_number = [30]  # The least number of years which is sufficient for SDF curve creation.
 
-        if site != '' and data == '':  # Checks to see whether the user asks for USGS gage or a file related SDF curve.
+        if len(site):  # Checks to see whether the user asks for USGS gage or a file related SDF curve.
 
             raw_data = pydat.daily_data(site=site)  # Calls the function to get the daily USGS gage data.
 
@@ -93,7 +93,7 @@ class pydat:
 
                 print('The site does not have a compatible record for SDF curve generation. Please modify it manually.')
 
-        elif site == '' and data != '':
+        elif len(data):
 
             raw_data = data
 

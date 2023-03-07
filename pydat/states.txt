@@ -17,7 +17,7 @@ index	code	  name
 'ia'	'16'	  # Iowa
 'ks'	'17'	  # Kansas
 'ky'	'18'	  # Kentucky
-'la'	'19'    # Louisiana
+'la'	'19'      # Louisiana
 'me'	'20'	  # Maine
 'md'	'21'	  # Maryland
 'ma'	'22'	  # Massachusetts

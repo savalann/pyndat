@@ -3,12 +3,13 @@ from datetime import datetime
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
+import sys
+from mpl_toolkits.axisartist import Axes
 
 class pydat:
 
     #  The function to give the station names for each state or basin.
-    def valid_station(status='good', state='', basin='', start_date="1800-01-01",
+    def valid_station(status='optimal', state='', basin='', start_date="1800-01-01",
                       end_date=datetime.today().strftime('%Y-%m-%d')):
 
         sufficient_year_number = [30]  # The least number of years which is sufficient for SDF curve creation.
@@ -30,7 +31,7 @@ class pydat:
         if status == 'all':  # Checks if user wants all the stations or only the ones suitable for SDF curve generation.
             site_names = site_names[(site_names['parm_cd'] == 60)].reset_index(drop=True)
 
-        elif status == 'good':
+        elif status == 'optimal':
             site_names = site_names[(site_names['parm_cd'] == 60) &
                                     (site_names['count_nu'] >= 10958)].reset_index(drop=True)
 
@@ -56,12 +57,13 @@ class pydat:
 
         if daily_streamflow.shape[1] > 3:
 
-            print('Warning: The output data format is not suitable for SDF curve generation and should have'
-                  ' modified manually.')
+            print('Corrupted Station Data Warning: The site does not have a compatible record for SDF '
+                  'curve generation.\nPlease modify it manually or use another site number.')
 
         elif daily_streamflow.shape[1] == 0:
 
-            print('Warning: This station has no records.')
+            print('Corrupted Station Data Warning: The site does not have a compatible record for SDF '
+                  'curve generation.\nPlease modify it manually or use another site number.')
 
         else:
 
@@ -81,7 +83,7 @@ class pydat:
         return daily_streamflow
 
     #  This function creates the SDF curves for USGS gage data or any file.
-    def sdf_creator(site='', data='', duration='all', figure=True, length=''):
+    def sdf_creator(status='all', site='', data='', duration='all', figure=True):
 
         sufficient_year_number = [30]  # The least number of years which is sufficient for SDF curve creation.
 
@@ -91,7 +93,7 @@ class pydat:
 
             if raw_data.shape[1] != 6 or raw_data.shape[1] == 0:  # Checks to whether data is ok or not.
 
-                print('The site does not have a compatible record for SDF curve generation. Please modify it manually.')
+                sys.exit(1)
 
         elif len(data):
 
@@ -127,17 +129,17 @@ class pydat:
 
             min_year = year_range[1]  # If first year is not complete (does not have October), it goes one year forward.
 
-        if length == 'optimal':  # Checks whether the user wants the SDF curve based on the best data criteria. *
+        if status == 'optimal':  # Checks whether the user wants the SDF curve based on the best data criteria. *
 
             # Whether data is more than the least number of required years.
             if len(year_range) < sufficient_year_number[0]:
 
-                print('The number of years is less than sufficient.')
+                print('Lack of Sufficient Number of Years Warning: The number of years is less than sufficient.')
 
             # Whether it has the sufficient recent years.
             elif not any(x in year_range for x in list(range(datetime.today().year - sufficient_year_number[0] - 1,
                                                              datetime.today().year + 1))):
-                print('The data does not contain the last recent years.')
+                print('Lack of Most Recent Data Warning: The data does not contain the last recent years.')
 
             else:
                 min_year = year_range[-sufficient_year_number[0]]  # Determines the first of the updated time-series.
@@ -170,15 +172,15 @@ class pydat:
 
             duration = list(map(int, duration.split(',')))
 
-        # Pre-defiend colors for the SDF curve.
+        # Pre-defined colors for the SDF curve.
         color = ['b', 'g', 'y', 'r', 'orange', 'brown', 'gray', 'cyan', 'olive', 'pink']
 
         # Calculates the SDF curve for each duration.
         for dd in range(len(duration)):
 
-            arrays = [['Duration = ' + str(duration[dd])] * 5,
-                      ["Date", "Flow_(cfs)", 'Mean_Flow_(cfs)', 'Severity_(cfs)',
-                       'Probability']]
+            arrays = [['Duration=' + str(duration[dd])] * 5,
+                      ["Date", "Mean_Flow(cfs)", 'Rolling_Average(cfs)', 'Severity(%)',
+                       'Probability(%)']]
 
             tuples = list(zip(*arrays))
 
@@ -219,50 +221,48 @@ class pydat:
         # Plotting the SDF curve.
         fig = 0
 
+        plt.rcParams["font.family"] = "Times New Roman"
+
+        fig = plt.figure(dpi=300, layout="constrained", facecolor='whitesmoke')
+
+        axs = fig.add_subplot(axes_class=Axes, facecolor='whitesmoke')
+
+        axs.axis["right"].set_visible(False)
+
+        axs.axis["top"].set_visible(False)
+
+        axs.axis["left"].set_axisline_style("-|>")
+
+        axs.axis["left"].line.set_facecolor("black")
+
+        axs.axis["bottom"].set_axisline_style("-|>")
+
+        axs.axis["bottom"].line.set_facecolor("black")
+
+        plt.title(label='SDF Curve', fontsize=20, pad=10)
+
+        axs.axis["bottom"].label.set_text("Severity (%)")
+
+        axs.axis["bottom"].label.set_fontsize(15)
+
+        axs.axis["left"].label.set_text("Non-Exceedance Probability")
+
+        axs.axis["left"].label.set_fontsize(15)
+
+        for dd, ii in enumerate(duration):
+            filled_marker_style = dict(marker='o', linestyle='-', markersize=5,
+                                       color=color[dd])
+
+            temp_final = final[('Duration=' + str(ii))].sort_values(by=['Probability(%)'])
+
+            axs.plot(temp_final.iloc[:, 3] * (-1), temp_final.iloc[:, 4], **filled_marker_style,
+                     label=('Duration = ' + str(ii)))
+
+        plt.legend(loc='lower right')
+
         if figure is True:
 
-            from mpl_toolkits.axisartist import Axes
-
-            plt.rcParams["font.family"] = "Times New Roman"
-
-            fig = plt.figure(dpi=300, layout="constrained", facecolor='whitesmoke')
-
-            axs = fig.add_subplot(axes_class=Axes, facecolor='whitesmoke')
-
-            axs.axis["right"].set_visible(False)
-
-            axs.axis["top"].set_visible(False)
-
-            axs.axis["left"].set_axisline_style("-|>")
-
-            axs.axis["left"].line.set_facecolor("black")
-
-            axs.axis["bottom"].set_axisline_style("-|>")
-
-            axs.axis["bottom"].line.set_facecolor("black")
-
-            plt.title(label='SDF Curve', fontsize=20, pad=10)
-
-            axs.axis["bottom"].label.set_text("Severity (%)")
-
-            axs.axis["bottom"].label.set_fontsize(15)
-
-            axs.axis["left"].label.set_text("Non-Exceedance Probability")
-
-            axs.axis["left"].label.set_fontsize(15)
-
-            for dd, ii in enumerate(duration):
-                filled_marker_style = dict(marker='o', linestyle='-', markersize=5,
-                                           color=color[dd])
-
-                temp_final = final[('Duration = ' + str(ii))].sort_values(by=['Probability'])
-
-                axs.plot(temp_final.iloc[:, 3] * (-1), temp_final.iloc[:, 4], **filled_marker_style,
-                         label=('Duration = ' + str(ii)))
-
-            plt.legend(loc='lower right')
-
-        plt.show()
+            plt.show()
 
         return final, raw_data, fig
 
@@ -430,23 +430,23 @@ class pydat:
         return analog_year_series
 
     # This function generates the streamflow analogs.
-    def streamflow_generator(site='', duration='', figure=False):
+    def streamflow_analog(status='all', site='', duration=''):
         # Call the sdf_creator function to get the raw data and sdf curve data.
-        sdf_data, raw_data, fig = pydat.sdf_creator(site=site, duration=duration, figure=figure)
+        sdf_data, raw_data, fig = pydat.sdf_creator(status=status, site=site, duration=duration, figure=False)
 
         duration = duration  # Asking the duration of the SDF curve.
 
         limit = 0.5  # Asking the limitation value for severity index comparison.
 
         # Getting the sdf curve data related to the required duration
-        modified_sdf = sdf_data[('Duration = ' + str(duration))]
+        modified_sdf = sdf_data[('Duration=' + str(duration))]
 
         #  Getting the proper columns and turning them to numpy for higher calculation speed.
-        tyd = modified_sdf.loc[:, ('Date', 'Severity_(cfs)', 'Probability')].to_numpy()
+        tyd = modified_sdf.loc[:, ('Date', 'Severity(%)', 'Probability(%)')].to_numpy()
 
         ts = raw_data.iloc[:, 0:2]  # Separating the date and streamflow data from the whole data.
 
-        analog_year_matrix = \
+        analog_year = \
             pydat.matrix(tyd, limit)  # Function for creating a table indicating the points with analog time-series.
 
         # Function for finding the information of each point and its analog time-series
@@ -456,9 +456,4 @@ class pydat:
         analog_year_series = pydat.analog(tyd, limit, int(duration), ts)
 
         #  Returning the analog years' list, analog years' information, and the daily data for analog years.
-        return analog_year_matrix, analog_year_info, analog_year_series
-
-
-
-
-#oh = pydat.sdf_creator('03098600')
+        return analog_year, analog_year_info, analog_year_series

@@ -27,6 +27,8 @@ class pydat:
         elif basin != '' and state == '':
             site_names = nwis.what_sites(huc=basin, parameterCd=parameter_code, outputDataTypeCd='dv',
                                          startDT=start_date, endDT=end_date)[0]
+            
+        site_names['parm_cd'] = site_names['parm_cd'].astype(np.int64) 
 
         if status == 'all':  # Checks if user wants all the stations or only the ones suitable for SDF curve generation.
             site_names = site_names[(site_names['parm_cd'] == 60)].reset_index(drop=True)
@@ -42,7 +44,8 @@ class pydat:
             apply(pd.to_datetime, errors='coerce')  # Changes the type of the begin_date column
 
         # Modifies the list based on the least number of years required for that specific state.
-        site_names = site_names[(site_names['begin_date'].dt.year <= datetime.today().year - sufficient_year_number[0])]
+        site_names = site_names[(site_names['begin_date'].dt.year <= datetime.today().year - 
+        sufficient_year_number[0])].reset_index(drop=True)
 
         return site_names
 
@@ -96,6 +99,10 @@ class pydat:
                 sys.exit(1)
 
         elif len(data):
+
+            data = data.rename({'Flow':'USGS_flow'}, axis = 1)
+
+            data['Datetime'] = pd.to_datetime(data['Datetime']).reset_index(drop=True)
 
             raw_data = data
 

@@ -270,6 +270,10 @@ class pydat:
         if figure is True:
 
             plt.show()
+            
+        elif figure is False:
+            
+            plt.close()
 
         return final, raw_data, fig
 
@@ -437,9 +441,9 @@ class pydat:
         return analog_year_series
 
     # This function generates the streamflow analogs.
-    def streamflow_analog(status='all', site='', duration=''):
+    def streamflow_analog(status='all', site='', data='', duration=''):
         # Call the sdf_creator function to get the raw data and sdf curve data.
-        sdf_data, raw_data, fig = pydat.sdf_creator(status=status, site=site, duration=duration, figure=False)
+        sdf_data, raw_data, fig = pydat.sdf_creator(status=status, site=site, data=data, duration=duration, figure=False)
 
         duration = duration  # Asking the duration of the SDF curve.
 

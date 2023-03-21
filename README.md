@@ -20,5 +20,5 @@
  
  The final step in using pydat is calculating the daily streamflow time series for the points of the developed streamflow deficit SDFs. Since each point on the SDFs represents a specific event of a deficit level, the duration of the deficit, and the return period, a corresponding daily streamflow time series exists for that point. By linking the SDFs with daily resolution streamflow time series, the SDFs can be operationalized, providing water planners and managers with information about the duration, deficit level, and return periods of selected daily streamflow time series. This allows them to test their water supply system’s response to a range of plausible persistent streamflow deficit scenarios. Overall, pydat provides a valuable tool for water planning and management agencies and water researchers in the face of persistent streamflow drought conditions. The figure below shows the steps of the pydat package.
  
- <img width="640" alt="methodology" src="https://user-images.githubusercontent.com/67179927/226766889-523091ce-c749-484f-8987-c7a98560cea3.png">
+ <img width="1024" alt="methodology" src="https://user-images.githubusercontent.com/67179927/226766889-523091ce-c749-484f-8987-c7a98560cea3.png">
 

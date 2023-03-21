@@ -1,2 +1,2 @@
-# What is pydat?
+What is pydat?
 

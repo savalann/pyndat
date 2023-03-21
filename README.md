@@ -5,12 +5,15 @@
 1.	Presenting a comprehensive list of the stations in each state or watershed. 
 2.	Displaying the streamflow time series of each USGS station.
 
- The package has been designed to address the need for streamflow deficit SDFs information and their usage in operational water management amid persistent streamflow drought conditions nationally in the United States (US).
+ The package has been designed to address the need for streamflow deficit SDFs information and their usage in operational water management amid persistent streamflow drought conditions nationally in the United States (US).Figure 1 shows a sample of the SDF curves for a station in 
+ 
  Rainfall and flood frequency analysis methods are well established and widely used in analysis and design studies, including but not limited to stormwater management and design studies and hydraulic structures designs, etc. In contrast, no standard method(s) exist for persistent streamflow drought analysis and guidelines for water planners and managers to use in water supply planning and management studies. Although indices related to streamflow deficits are available in the literature, their limitation in usage in planning and operational way hinders their adaptation and useability among water planning and management agencies and utilities. Pydat has been developed to bridge this research and operations gap.
+
+----
 
 # Methodology
 
- The first step in using the pydat package is to obtain the daily streamflow time series for a given region of interest. By utilizing a service called the National Water Information System (NWIS) it obtains the daily mean stream values of U.S. Geological Survey (USGS) stream gauge data as its default source. The user can specify the state of interest by providing different inputs such as its two-letter abbreviation, after which all relevant USGS station information and their IDs will be displayed. The pydat package builds upon the python USGS dataretrieval package for data retrieval from the USGS website. Furthermore, it should be noted that pydat can also work with other data sources (such as CSV files) with just a few simple tips about the data table and heading columns, as explained in the upcoming sections. 
+ The first step in using the pydat package is to obtain the daily streamflow time series for a given region of interest. By utilizing a service called the National Water Information System (NWIS) it obtains the daily mean stream values of U.S. Geological Survey (USGS) stream gauge data as its default source. The user can specify the state of interest by providing different inputs such as its two-letter abbreviation, after which all relevant USGS station information and their IDs will be displayed. The pydat package builds upon the python [USGS dataretrieval]([link](https://github.com/DOI-USGS/dataretrieval-python)){:target="_blank"} package for data retrieval from the USGS website. Furthermore, it should be noted that pydat can also work with other data sources (such as CSV files) with just a few simple tips about the data table and heading columns, as explained in the upcoming sections. 
  
  Once a station is selected, pydat develops multi-year streamflow deficit SDFs for that station, allowing the user to specify the SDF duration. The SDFs are then displayed in both tabular and visual forms for the selected duration. It is important to note that the durations are calculated based on the moving average, and the deficit severity is calculated as a departure from the long-term average flow for each duration.
  

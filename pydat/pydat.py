@@ -102,7 +102,7 @@ class pydat:
 
             data = data.rename({'Flow':'USGS_flow'}, axis = 1)
 
-            data['Datetime'] = pd.to_datetime(data['Datetime']).reset_index(drop=True)
+            data['Datetime'] = pd.to_datetime(data['Datetime'])
 
             raw_data = data
 

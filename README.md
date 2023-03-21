@@ -10,6 +10,7 @@
  Rainfall and flood frequency analysis methods are well established and widely used in analysis and design studies, including but not limited to stormwater management and design studies and hydraulic structures designs, etc. In contrast, no standard method(s) exist for persistent streamflow drought analysis and guidelines for water planners and managers to use in water supply planning and management studies. Although indices related to streamflow deficits are available in the literature, their limitation in usage in planning and operational way hinders their adaptation and useability among water planning and management agencies and utilities. Pydat has been developed to bridge this research and operations gap.
 [National Water Information System (NWIS)](https://waterdata.usgs.gov/nwis/)
 ----
+![image](https://user-images.githubusercontent.com/67179927/226765394-300f20a4-29ac-429e-a8ff-5d50a5c8af25.png)
 
 # Methodology
 

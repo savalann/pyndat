@@ -22,3 +22,22 @@
  
  <img width="1024" alt="methodology" src="https://user-images.githubusercontent.com/67179927/226766889-523091ce-c749-484f-8987-c7a98560cea3.png">
 
+# Installation
+
+To use the package first it is required to clone the repository and install the required packages. 
+
+The code needed for doing this part in Google Colab is written in the below cells. 
+
+'''
+!git clone https://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@github.com/savalann/pydat.git
+
+%cd pydat/pydat/
+
+!pip3 install -r requirements.txt
+'''
+
+
+# Examples
+
+Below 
+

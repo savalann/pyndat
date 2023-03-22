@@ -30,11 +30,16 @@ The code needed for doing this part in Google Colab is written in the below cell
 
 Some basic Git commands are:
 ```
-git status
+!git clone https://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@github.com/savalann/pydat.git
 git add
 git commit
 ```
+'''
+!git clone https://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@github.com/savalann/pydat.git
 
+%cd pydat/pydat/
+
+!pip3 install -r requirements.txt
 # Examples
 
 Below 

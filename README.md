@@ -29,12 +29,12 @@ To use the package first it is required to clone the repository and install the 
 The code needed for doing this part in Google Colab is written in the below cells. 
 
 '''
-
 !git clone https://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@github.com/savalann/pydat.git
+
 %cd pydat/pydat/
+
 !pip3 install -r requirements.txt
 '''
-
 
 # Examples
 

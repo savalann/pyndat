@@ -228,7 +228,7 @@ class pydat:
         # Plotting the SDF curve.
         fig = 0
 
-        plt.rcParams["font.family"] = "Times New Roman"
+        # plt.rcParams["font.family"] = "Times New Roman"
 
         fig = plt.figure(dpi=300, layout="constrained", facecolor='whitesmoke')
 

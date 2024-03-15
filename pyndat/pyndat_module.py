@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import sys
 from mpl_toolkits.axisartist import Axes
 
-class pydat:
+class Pyndat:
 
     #  The function to give the station names for each state or basin.
     def valid_station(status='optimal', state='', basin='', start_date="1800-01-01",
@@ -92,7 +92,7 @@ class pydat:
 
         if len(site):  # Checks to see whether the user asks for USGS gage or a file related SDF curve.
 
-            raw_data = pydat.daily_data(site=site)  # Calls the function to get the daily USGS gage data.
+            raw_data = Pyndat.daily_data(site=site)  # Calls the function to get the daily USGS gage data.
 
             if raw_data.shape[1] != 6 or raw_data.shape[1] == 0:  # Checks to whether data is ok or not.
 
@@ -100,7 +100,7 @@ class pydat:
 
         elif len(data):
 
-            data = data.rename({'Flow':'USGS_flow'}, axis = 1)
+            data = data.rename({'Flow': 'USGS_flow'}, axis=1)
 
             data['Datetime'] = pd.to_datetime(data['Datetime'])
 
@@ -203,6 +203,9 @@ class pydat:
             # Calculates the severity.
             mean_year_temp.iloc[:, 3] = (mean_year_temp.iloc[:, 2] - overall_average) / overall_average * 100
 
+            # Get all the wet and drought severity values
+            final_all_years_temp = mean_year_temp
+
             mean_year_temp = mean_year_temp[mean_year_temp.iloc[:, 3] <= 0]  # Removes the non drought severity.
 
             # Sort the data for frequency calculation
@@ -219,11 +222,14 @@ class pydat:
             if dd == 0:
 
                 final = temp_final.reset_index(drop=True)
+                final_all_years = final_all_years_temp.reset_index(drop=True)
 
             else:
 
                 final = pd.concat([final.reset_index(drop=True),
                                    temp_final.reset_index(drop=True)], axis=1)
+                final_all_years = pd.concat([final_all_years.reset_index(drop=True),
+                                   final_all_years_temp.reset_index(drop=True)], axis=1)
 
         # Plotting the SDF curve.
         fig = 0
@@ -275,7 +281,7 @@ class pydat:
             
             plt.close()
 
-        return final, raw_data, fig
+        return final, raw_data, fig, final_all_years
 
     def info(tyd, limit):
 
@@ -443,7 +449,7 @@ class pydat:
     # This function generates the streamflow analogs.
     def streamflow_analog(status='all', site='', data='', duration=''):
         # Call the sdf_creator function to get the raw data and sdf curve data.
-        sdf_data, raw_data, fig = pydat.sdf_creator(status=status, site=site, data=data, duration=duration, figure=False)
+        sdf_data, raw_data, fig = Pyndat.sdf_creator(status=status, site=site, data=data, duration=duration, figure=False)
 
         duration = duration  # Asking the duration of the SDF curve.
 
@@ -458,13 +464,13 @@ class pydat:
         ts = raw_data.iloc[:, 0:2]  # Separating the date and streamflow data from the whole data.
 
         analog_year = \
-            pydat.matrix(tyd, limit)  # Function for creating a table indicating the points with analog time-series.
+            Pyndat.matrix(tyd, limit)  # Function for creating a table indicating the points with analog time-series.
 
         # Function for finding the information of each point and its analog time-series
-        analog_year_info = pydat.info(tyd, limit)
+        analog_year_info = Pyndat.info(tyd, limit)
 
         # Function for finding the analog time-series daily data
-        analog_year_series = pydat.analog(tyd, limit, int(duration), ts)
+        analog_year_series = Pyndat.analog(tyd, limit, int(duration), ts)
 
         #  Returning the analog years' list, analog years' information, and the daily data for analog years.
         return analog_year, analog_year_info, analog_year_series

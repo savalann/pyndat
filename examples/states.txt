@@ -1,0 +1,52 @@
+index	code	  name 
+'al'	'01'	  # Alabama
+'ak'	'02'	  # Alaska
+'az'	'03'	  # Arizona
+'ar'	'04'	  # Arkansas
+'ca'	'05'	  # California
+'co'	'06'	  # Colorado
+'ct'	'07'	  # Conneticut
+'de'	'08'	  # Delaware
+'dc'	'09'	  # District of Columbia
+'fl'	'10'	  # Florida
+'ga'	'11'	  # Georgia
+'hi'	'12'	  # Hawaii
+'id'	'13'	  # Idaho
+'il'	'14'	  # Illinois
+'in'	'15'	  # Indiana
+'ia'	'16'	  # Iowa
+'ks'	'17'	  # Kansas
+'ky'	'18'	  # Kentucky
+'la'	'19'      # Louisiana
+'me'	'20'	  # Maine
+'md'	'21'	  # Maryland
+'ma'	'22'	  # Massachusetts
+'mi'	'23'	  # Michigan
+'mn'	'24'	  # Minnesota
+'ms'	'25'	  # Mississippi
+'mo'	'26'	  # Missouri
+'mt'	'27'	  # Montana
+'ne'	'28'	  # Nebraska
+'nv'	'29'	  # Nevada
+'nh'	'30'	  # New Hampshire
+'nj'	'31'	  # New Jersey
+'nm'	'32'	  # New Mexico
+'ny'	'33'	  # New York
+'nc'	'34'	  # North Carolina
+'nd'	'35'	  # North Dakota
+'oh'	'36'	  # Ohio
+'ok'	'37'	  # Oklahoma
+'or'	'38'	  # Oregon
+'pa'	'39'	  # Pennsylvania
+'ri'	'40'	  # Rhode Island
+'sc'	'41'	  # South Carolina
+'sd'	'42'	  # South Dakota
+'tn'	'43'	  # Tennessee
+'tx'	'44'	  # Texas
+'ut'	'45'	  # Utah
+'vt'	'46'	  # Vermont
+'va'	'47'	  # Virginia
+'wa'	'48'	  # Washington
+'wv'	'49'	  # West Virginia
+'wi'	'50'	  # Wisconsin
+'wy'	'51'	  # Wyoming

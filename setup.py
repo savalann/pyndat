@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyndat',
-    version='0.0.1',
+    version='0.0.2',
     packages=find_packages(include=['pyndat']),
     license='Apache License 2.0',
     description='A toolbox for analyzing hydrological drought',

@@ -201,7 +201,8 @@ $RECYCLE.BIN/
 dist/
 build/
 *.egg-info/
-
+archive_versions/
+g
 # My temporary codes
 test.py
 

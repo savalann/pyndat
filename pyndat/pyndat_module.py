@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import sys
 from mpl_toolkits.axisartist import Axes
 
-
 class Pyndat:
 
     #  The function to give the station names for each state or basin.
@@ -46,7 +45,7 @@ class Pyndat:
 
         # Modifies the list based on the least number of years required for that specific state.
         site_names = site_names[(site_names['begin_date'].dt.year <= datetime.today().year -
-                                 sufficient_year_number[0])].reset_index(drop=True)
+        sufficient_year_number[0])].reset_index(drop=True)
 
         return site_names
 
@@ -205,7 +204,7 @@ class Pyndat:
             mean_year_temp.iloc[:, 3] = (mean_year_temp.iloc[:, 2] - overall_average) / overall_average * 100
 
             # Get all the wet and drought severity values
-            final_all_years_temp = mean_year_temp
+            final_all_years_temp = pd.DataFrame(mean_year_temp.to_numpy(), columns=index).iloc[:, :-1]
 
             mean_year_temp = mean_year_temp[mean_year_temp.iloc[:, 3] <= 0]  # Removes the non drought severity.
 
@@ -230,7 +229,7 @@ class Pyndat:
                 final = pd.concat([final.reset_index(drop=True),
                                    temp_final.reset_index(drop=True)], axis=1)
                 final_all_years = pd.concat([final_all_years.reset_index(drop=True),
-                                             final_all_years_temp.reset_index(drop=True)], axis=1)
+                                   final_all_years_temp.reset_index(drop=True)], axis=1)
 
         # Plotting the SDF curve.
         fig = 0
@@ -342,32 +341,33 @@ class Pyndat:
 
     def matrix(tyd, limit):
 
-        similar_year = np.zeros([len(tyd), len(tyd) - 1])  # Creating empty numpy array
+        similar_year = np.zeros([len(tyd), len(tyd) - 1])    # Creating empty numpy array
 
-        high_a = 0  # Creating an initial variable
+        high_a = 0      # Creating an initial variable
 
-        tyd[:, 1] = np.round(tyd[:, 1], 1)  # Rounding the severity to one decimal
+        tyd[:, 1] = np.round(tyd[:, 1], 1)      # Rounding the severity to one decimal
 
         for i in range(len(tyd)):
 
-            a = 1  # Creating an initial variable
+            a = 1       # Creating an initial variable
 
             for j in range(len(tyd)):
 
-                if j > i:  # This comparison is for preventing duplicate analog time-series
+                if j > i:       # This comparison is for preventing duplicate analog time-series
 
-                    if tyd[i, 1] - limit <= tyd[j, 1] <= tyd[i, 1] + limit:  # Determining the analog time-series
+                    if tyd[i, 1] - limit <= tyd[j, 1] <= tyd[i, 1] + limit:     # Determining the analog time-series
                         # based on severity
 
-                        similar_year[i, 0] = tyd[i, 0]  # The year of the SDF curve point
+                        similar_year[i, 0] = tyd[i, 0]      # The year of the SDF curve point
 
-                        similar_year[i, a] = tyd[j, 0]  # The
+                        similar_year[i, a] = tyd[j, 0]      # The
 
                         a = a + 1
 
             # Find the highest number of analog time-series.
 
             if high_a < a:
+
                 high_a = a
 
         similar_year[:, 0] = tyd[:, 0]
@@ -393,13 +393,13 @@ class Pyndat:
                     if tyd[i, 1] - limit <= tyd[j, 1] <= tyd[i, 1] + limit:
 
                         if b == 1:
+
                             end_year = int(tyd[i, 0])
 
                             start_year = end_year - duration
 
-                            index_year = ts[
-                                (ts.iloc[:, 0] >= str(start_year) + '-10-01') & (ts.iloc[:, 0] < str(end_year) +
-                                                                                 '-10-01')]
+                            index_year = ts[(ts.iloc[:, 0] >= str(start_year) + '-10-01') & (ts.iloc[:, 0] < str(end_year) +
+                                                                                             '-10-01')]
 
                             arrays = [[str(int(tyd[i, 0]))] * 2, ["Date_index", "Flow_cfs_index"]]
 
@@ -415,9 +415,8 @@ class Pyndat:
 
                         start_year = end_year - duration
 
-                        result_year = ts[
-                            (ts.iloc[:, 0] >= str(start_year) + '-10-01') & (ts.iloc[:, 0] < str(end_year) +
-                                                                             '-10-01')]
+                        result_year = ts[(ts.iloc[:, 0] >= str(start_year) + '-10-01') & (ts.iloc[:, 0] < str(end_year) +
+                                                                                          '-10-01')]
 
                         arrays = [[str(int(tyd[i, 0]))] * 2, ["Date_similar_" + str(b), "Flow_cfs_similar_" + str(b)]]
 
@@ -435,9 +434,11 @@ class Pyndat:
             if b != 1:
 
                 if c == 1:
+
                     analog_year_series = index_year
 
                 if c > 1:
+
                     analog_year_series = pd.concat([analog_year_series.reset_index(drop=True),
                                                     index_year.reset_index(drop=True)], axis=1)
 
@@ -448,8 +449,7 @@ class Pyndat:
     # This function generates the streamflow analogs.
     def streamflow_analog(status='all', site='', data='', duration=''):
         # Call the sdf_creator function to get the raw data and sdf curve data.
-        sdf_data, raw_data, fig = Pyndat.sdf_creator(status=status, site=site, data=data, duration=duration,
-                                                     figure=False)
+        sdf_data, raw_data, fig = Pyndat.sdf_creator(status=status, site=site, data=data, duration=duration, figure=False)
 
         duration = duration  # Asking the duration of the SDF curve.
 
